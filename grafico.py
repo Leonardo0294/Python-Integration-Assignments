@@ -1,5 +1,6 @@
 import pandas as pd
 from datetime import date
+import matplotlib.pyplot as plt
 
 def over_25_years():
     # Cargar edades desde el archivo CSV
@@ -27,8 +28,25 @@ def over_25_years():
         edad = calcular_edad(fecha_nacimiento)
         
         if edad > 25:
-            mayores_de_25.append((fecha_nacimiento, edad))
+            mayores_de_25.append(edad)
     
-    print(mayores_de_25)
+    # Crear un DataFrame con las edades filtradas
+    df_edades = pd.DataFrame(mayores_de_25, columns=['Edad'])
+    
+    # Contar la frecuencia de cada edad
+    frecuencia_edades = df_edades['Edad'].value_counts().sort_index()
+    
+    # Crear el gráfico de líneas
+    plt.figure(figsize=(10, 6))
+    plt.plot(frecuencia_edades.index, frecuencia_edades.values, marker='o', linestyle='-', color='b')
+    
+    # Configuración del gráfico
+    plt.title('Frecuencia de Edades Mayores de 25 años')
+    plt.xlabel('Edad')
+    plt.ylabel('Frecuencia')
+    plt.grid(True)
+    
+    # Mostrar el gráfico
+    plt.show()
 
 over_25_years()

@@ -1,29 +1,32 @@
-import pandas as pd
-from datetime import datetime
+def girl_or_boy(nombre_usuario):
 
-# Cargar el archivo CSV en un DataFrame
-df = pd.read_csv('edades.csv')
+    # Validaciones
+    if type(nombre_usuario) != str:
+        raise TypeError("El parametro recibido no es una cadena")
+    
+    if len(nombre_usuario) == 0:
+        raise ValueError("El parametro recibido es una cadena vacia")
+    
+    if nombre_usuario != nombre_usuario.lower():
+        raise ValueError("El parametro recibido debe ser una cadena que contenga solo minusculas")
 
-# Convertir la columna 'fecha_nacimiento' a tipo datetime
-df['fecha_nacimiento'] = pd.to_datetime(df['fecha_nacimiento'])
+    try:
+        chars = []
 
-# Calcular la fecha actual
-fecha_actual = datetime.now()
+        # Se guarda cada caracter en una lista, cada uno solamente una vez
+        for i in nombre_usuario:
+            if i not in chars:
+                chars.append(i)
 
-# Calcular la edad de cada persona en años
-df['edad'] = (fecha_actual - df['fecha_nacimiento']).astype('<m8[Y]')
+        # Si es par, es una mujer, si es impar, es un hombre
+        if len(chars) % 2 == 0:
+            return "¡ITS A GIRL!"
+        else:
+            return "¡ITS A BOY!"
+    except Exception as e:
+        return e
 
-# Filtrar personas mayores de 25 años
-df_filtrado = df[df['edad'] > 25]
-
-# Ordenar las edades en forma ascendente
-df_filtrado = df_filtrado.sort_values(by='edad')
-
-# Contar las edades únicas y su frecuencia
-edades_unicas = df_filtrado['edad'].value_counts().sort_index()
-
-# Crear un DataFrame con las edades únicas y su frecuencia
-df_edades = pd.DataFrame({'Edad': edades_unicas.index, 'Frecuencia': edades_unicas.values})
-
-# Mostrar el DataFrame resultante
-print(df_edades)
+# Ejemplos
+print(girl_or_boy("ericwithc04"))
+print(girl_or_boy("rodriasd"))
+print(girl_or_boy("maria"))
